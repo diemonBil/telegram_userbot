@@ -1,0 +1,41 @@
+# Telegram Userbot configuration example
+# Copy to config.yaml and fill in your values
+
+# ─── Global Settings ─────────────────────────────────────────────────────────
+# Delay range between bot messages (seconds)
+delay_min: 8
+delay_max: 25
+
+# Number of messages to keep in context window per group
+context_window: 30
+
+# ─── Sessions ────────────────────────────────────────────────────────────────
+sessions:
+  - name: "alex"
+    string_session: "1BQANOTEALdXXXXXXXXXXXXXXXXXXXXXXX..."
+    is_admin: true          # This session listens for DMs and starts topics
+    persona: "Олексій, 28 років, цікавиться технологіями та стартапами. Розмовляє впевнено, іноді жартує."
+
+  - name: "maria"
+    string_session: "1BQANOTEALdYYYYYYYYYYYYYYYYYYYYYYY..."
+    is_admin: false
+    persona: "Марія, 25 років, дизайнер UX/UI. Ентузіастична, використовує емодзі, любить обговорювати естетику."
+
+  - name: "dmytro"
+    string_session: "1BQANOTEALdZZZZZZZZZZZZZZZZZZZZZZZ..."
+    is_admin: false
+    persona: "Дмитро, 32 роки, backend-розробник. Аналітичний, відповідає коротко і по суті."
+
+# ─── Groups ──────────────────────────────────────────────────────────────────
+groups:
+  - id: -1001234567890       # Telegram group/supergroup ID (negative number)
+    name: "Tech Discussion"
+    # Sessions that participate in this group (by name)
+    participants: ["alex", "maria", "dmytro"]
+    # General prompt for all bots in this group
+    prompt: |
+      Ти учасник живого чату в Telegram-групі про технології та стартапи.
+      Спілкуйся природно, як реальна людина: коротко, невимушено, іноді з гумором.
+      Не використовуй формальні фрази, не нагадуй що ти AI.
+      Дотримуйся теми розмови та будь логічно послідовним.
+      Відповіді мають бути від 1 до 4 речень — не більше.
