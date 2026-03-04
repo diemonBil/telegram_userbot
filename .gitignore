@@ -2,6 +2,9 @@
 .env
 *.env
 
+# Config with real credentials (StringSessions, API keys)
+config.yaml
+
 # Sessions (sensitive!)
 sessions/
 *.session
