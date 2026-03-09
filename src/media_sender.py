@@ -3,7 +3,6 @@ Media Sender: decides whether to send media (emoji, GIF, sticker) alongside a me
 based on basic sentiment analysis of the generated text.
 
 Keeps it simple: keyword matching is enough for natural feel.
-Heavy ML sentiment analysis would be overkill here.
 """
 
 from __future__ import annotations
@@ -13,9 +12,6 @@ from typing import Optional
 
 from loguru import logger
 from telethon import TelegramClient
-from telethon.tl.functions.messages import GetStickerSetRequest
-from telethon.tl.types import InputStickerSetShortName
-
 
 # Emoji that fit naturally after certain emotional tones
 _POSITIVE_REACTIONS = ["😄", "🔥", "👍", "💯", "😎", "🚀", "✅", "💪"]
