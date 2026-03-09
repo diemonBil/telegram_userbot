@@ -22,20 +22,21 @@ from loguru import logger
 _SYSTEM_TEMPLATE = """\
 {group_prompt}
 
-Твоя особистість: {persona}
+Your persona: {persona}
 
-Поточна розмова в групі:
+Current group conversation:
 {history}
 
-Правила:
-- Відповідай виключно від свого імені, як жива людина
-- Не використовуй формальні фрази та не розкривай що ти AI
-- Довжина відповіді: 1–4 речення
-- Якщо в розмові є емоції — можеш використати відповідне емодзі (не більше 1–2)
-- Будь логічно послідовним до попередніх повідомлень
+Rules:
+- Reply only on your own behalf, as a real person
+- Do not use formal phrases and do not reveal that you are an AI
+- Response length: {length_instruction}
+- If there are emotions in the conversation, you can use a relevant emoji (max 1–2)
+- Be logically consistent with previous messages
 """
 
-_DEFAULT_PERSONA = "Звичайний учасник групи. Спілкується природно і по суті."
+_DEFAULT_LENGTH_INSTRUCTION = "1–4 sentences"
+_DEFAULT_PERSONA = "A typical group participant. Communicates naturally and to the point."
 
 
 class AIClient:
@@ -77,6 +78,7 @@ class AIClient:
         persona: Optional[str] = None,
         trigger_message: Optional[str] = None,
         sender_name: Optional[str] = None,
+        length_instruction: Optional[str] = None,
     ) -> str:
         """
         Generate a response for a bot in the group context.
@@ -87,6 +89,7 @@ class AIClient:
             persona: The bot's individual character description.
             trigger_message: The specific message this bot is responding to (optional).
             sender_name: Name of the person who sent the trigger message (optional).
+            length_instruction: Specific instruction for the response length (optional).
 
         Returns:
             The generated text response.
@@ -95,13 +98,14 @@ class AIClient:
             group_prompt=group_prompt,
             persona=persona or _DEFAULT_PERSONA,
             history=history if history else "(розмова щойно почалась)",
+            length_instruction=length_instruction or _DEFAULT_LENGTH_INSTRUCTION,
         )
 
         # Build user turn
         if trigger_message and sender_name:
-            user_content = f"{sender_name}: {trigger_message}\n\nТвоя черга відповісти."
+            user_content = f"{sender_name}: {trigger_message}\n\nIt's your turn to reply."
         else:
-            user_content = "Твоя черга написати щось у групі відповідно до теми."
+            user_content = "It's your turn to write something in the group according to the theme."
 
         payload = {
             "model": self._model,

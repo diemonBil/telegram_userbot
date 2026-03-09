@@ -45,6 +45,7 @@ class SessionConfig(BaseModel):
 
 class GroupConfig(BaseModel):
     id: int
+    username: Optional[str] = None   # Optional public username for joining
     name: str
     participants: list[str]          # list of session names
     prompt: str

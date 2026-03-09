@@ -71,6 +71,8 @@ async def main() -> None:
 
     try:
         await session_mgr.connect_all()
+        # Join groups by username to ensure entity mapping exists
+        await session_mgr.join_groups()
     except RuntimeError as e:
         logger.error(f"Session connection failed: {e}")
         sys.exit(1)
@@ -81,7 +83,7 @@ async def main() -> None:
         base_url=config.env.grok_api_base_url,
         model=config.env.grok_model,
     )
-    media_sender = MediaSender(emoji_probability=0.3, gif_probability=0.08)
+    media_sender = MediaSender(emoji_probability=0.1, gif_probability=0.08)
 
     # ── 4. Build Bot instances ────────────────────────────────────────────────
     bots_by_name: dict[str, Bot] = {}

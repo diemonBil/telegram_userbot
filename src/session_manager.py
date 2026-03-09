@@ -68,6 +68,30 @@ class SessionManager:
                 await client.disconnect()
                 logger.info(f"Session '{name}' disconnected")
 
+    async def join_groups(self) -> None:
+        """
+        Attempt to join all configured groups by their username.
+        This ensures the entity cache is populated.
+        """
+        from telethon.tl.functions.channels import JoinChannelRequest
+        
+        for group_cfg in self._config.yaml.groups:
+            if not group_cfg.username:
+                continue
+            
+            for session_name in group_cfg.participants:
+                client = self.get(session_name)
+                try:
+                    await client(JoinChannelRequest(group_cfg.username))
+                    logger.info(
+                        f"Bot '{session_name}' joined group '@{group_cfg.username}'"
+                    )
+                except Exception as e:
+                    # Often fails if already joined, which is fine
+                    logger.debug(
+                        f"Bot '{session_name}' tried to join '@{group_cfg.username}': {e}"
+                    )
+
     def get(self, name: str) -> TelegramClient:
         """Get a client by session name."""
         if name not in self._clients:

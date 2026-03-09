@@ -99,6 +99,18 @@ class Bot:
 
         # 1. Generate AI response
         history_text = context.format_for_prompt()
+
+        # Randomly choose length instruction
+        # 60% very short, 30% short, 10% detailed
+        length_options = [
+            "very short reply (1–5 words)",
+            "short reply (1–2 sentences)",
+            "detailed reply (3–5 sentences)",
+        ]
+        length_weights = [60, 30, 10]
+        chosen_length = random.choices(length_options, weights=length_weights, k=1)[0]
+        logger.debug(f"[{self.session_name}] Chosen length instruction: {chosen_length}")
+
         try:
             text = await self._ai.generate(
                 group_prompt=group_prompt,
@@ -106,6 +118,7 @@ class Bot:
                 persona=self.persona,
                 trigger_message=trigger_message,
                 sender_name=trigger_sender,
+                length_instruction=chosen_length,
             )
         except Exception as e:
             logger.error(f"[{self.session_name}] AI generation failed: {e}")

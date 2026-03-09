@@ -117,7 +117,7 @@ class Orchestrator:
             # Determine how many messages this bot will send this turn (1 or 2)
             turns = random.choices(
                 [1, 2],
-                weights=[0.75, 0.25],  # 75% chance of 1, 25% chance of 2
+                weights=[1, 0],  # 100% chance of 1, 0% chance of 2
             )[0]
 
             for _ in range(turns):
@@ -129,7 +129,7 @@ class Orchestrator:
                     context=self._context,
                     group_prompt=self._group_cfg.prompt,
                 )
-
+                print(self._context)
                 # Short gap between consecutive messages from same bot
                 if turns > 1:
                     await asyncio.sleep(random.uniform(2.0, 5.0))
@@ -139,6 +139,11 @@ class Orchestrator:
                 self._app_cfg.yaml.delay_min,
                 self._app_cfg.yaml.delay_max,
             )
+            
+            # If we just resumed after a real user interaction, add extra delay
+            if self._paused: # This check is tricky because _paused is set to False in resume()
+                inter_turn_delay += 10.0
+
             logger.debug(
                 f"[{self._group_cfg.name}] Next turn in {inter_turn_delay:.1f}s"
             )

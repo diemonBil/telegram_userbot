@@ -48,6 +48,8 @@ class ReplyHandler:
         self._context = context
         self._orchestrator = orchestrator
         self._response_lock = asyncio.Lock()
+        self._handled_message_ids: set[int] = set()
+        self._max_id_cache = 100
 
         # Register handlers for each bot client
         for bot in bots:
@@ -79,9 +81,28 @@ class ReplyHandler:
             f"in group '{self._group_cfg.name}'"
         )
 
+    def _should_handle(self, msg_id: int) -> bool:
+        """Check if this message has already been handled by another client."""
+        if msg_id in self._handled_message_ids:
+            return False
+        
+        # Add to cache and prune if too large
+        self._handled_message_ids.add(msg_id)
+        if len(self._handled_message_ids) > self._max_id_cache:
+            # Remove the oldest (roughly, it's a set, but for small sizes it's fine)
+            # Better: convert to list and remove first element
+            ids = list(self._handled_message_ids)
+            self._handled_message_ids = set(ids[-self._max_id_cache:])
+            
+        return True
+
     async def _on_group_message(self, event: events.NewMessage.Event) -> None:
         """Called for every incoming message in the group."""
         msg = event.message
+
+        # Deduplicate: only one client should process this message ID
+        if not self._should_handle(msg.id):
+            return
 
         # We only care about messages that are replies
         if not msg.reply_to_msg_id:
@@ -145,7 +166,7 @@ class ReplyHandler:
                 reply_to_msg_id=msg.id,
             )
 
-            self._orchestrator.resume(delay=10.0)
+            self._orchestrator.resume(delay=15.0)
 
     async def _handle_real_user_message(self, event: events.NewMessage.Event) -> None:
         """
