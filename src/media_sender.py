@@ -21,17 +21,17 @@ from telethon.tl.types import InputStickerSetShortName
 _POSITIVE_REACTIONS = ["😄", "🔥", "👍", "💯", "😎", "🚀", "✅", "💪"]
 _FUNNY_REACTIONS = ["😂", "🤣", "💀", "😅", "🙈"]
 _THOUGHTFUL_REACTIONS = ["🤔", "💭", "👀", "🧐"]
-_AGREEMENT_REACTIONS = ["☝️", "+1", "💯", "саме так", "точно", "згоден"]
+_AGREEMENT_REACTIONS = ["☝️", "+1", "💯", "exactly", "definitely", "agreed"]
 
 # Keywords that trigger different emotional reactions
 _POSITIVE_KEYWORDS = [
-    "круто", "чудово", "відмінно", "клас", "топ", "шикарно",
-    "супер", "молодець", "excellent", "great", "nice", "cool",
+    "cool", "wonderful", "excellent", "class", "top", "awesome",
+    "super", "well done", "nice", "great", "fantastic",
 ]
 _FUNNY_KEYWORDS = [
-    "😂", "ха", "смішно", "жарт", "прикол", "lol", "хаха",
+    "😂", "ha", "funny", "joke", "lol", "haha",
 ]
-_QUESTION_KEYWORDS = ["?", "як ти думаєш", "як гадаєш", "що скажеш"]
+_QUESTION_KEYWORDS = ["?", "what do you think", "how do you feel", "what do you say"]
 
 
 def _detect_sentiment(text: str) -> str:

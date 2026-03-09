@@ -69,14 +69,14 @@ class ContextManager:
         suitable for inclusion in an AI prompt.
 
         Example output:
-            Олексій: Цікаво, що думаєте про React Server Components?
-            Марія: Мені здається, це майбутнє фронтенду 🔥
-            Дмитро (відповідає Марії): Погоджуюсь, але холодний старт все ще проблема
+            Alex: Interesting, what do you think about React Server Components?
+            Maria: I think it's the future of frontend 🔥
+            Dmytro (replying to Maria): Agreed, but cold starts are still an issue
         """
         lines = []
         for msg in self._history:
             if msg.reply_to_sender:
-                prefix = f"{msg.sender_name} (відповідає {msg.reply_to_sender})"
+                prefix = f"{msg.sender_name} (replying to {msg.reply_to_sender})"
             else:
                 prefix = msg.sender_name
             lines.append(f"{prefix}: {msg.text}")

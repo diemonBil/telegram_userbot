@@ -97,7 +97,7 @@ class AIClient:
         system_prompt = _SYSTEM_TEMPLATE.format(
             group_prompt=group_prompt,
             persona=persona or _DEFAULT_PERSONA,
-            history=history if history else "(розмова щойно почалась)",
+            history=history if history else "(conversation just started)",
             length_instruction=length_instruction or _DEFAULT_LENGTH_INSTRUCTION,
         )
 

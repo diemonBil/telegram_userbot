@@ -134,7 +134,7 @@ class ReplyHandler:
 
         # At this point: real user replied to one of our bots
         sender: Optional[User] = await event.get_sender()
-        sender_name = sender.first_name if sender else "Користувач"
+        sender_name = sender.first_name if sender else "User"
         real_user_text = msg.text or ""
 
         if not real_user_text:
@@ -180,7 +180,7 @@ class ReplyHandler:
             return  # This is a bot message, orchestrator handles context update
 
         sender: Optional[User] = await event.get_sender()
-        sender_name = sender.first_name if sender else "Користувач"
+        sender_name = sender.first_name if sender else "User"
         text = msg.text or ""
 
         if not text:
